@@ -2,10 +2,24 @@
 import unittest
 import json, os
 import numpy as np
+import shutil
 from PIL import Image
-from pdf_gpt4_json.util import is_solid_color, parse_json_string ,encode_images, get_image_files
+from pdf_gpt4_json.util import is_solid_color, parse_json_string ,encode_images, get_image_files, resize_images
 
 class TestUtilMethods(unittest.TestCase):
+    
+    def get_test_image_folder(self):
+            current_path = os.path.dirname(os.path.abspath(__file__))
+            tmp_images_folder = os.path.join(current_path, 'imgs')
+            return tmp_images_folder
+
+    def make_test_image_folder_copy(self):
+        newfolder = self.get_test_image_folder() + '_copy'
+        shutil.copytree(self.get_test_image_folder(), newfolder)
+        return newfolder
+    
+    def remove_test_image_folder_copy(self):
+        shutil.rmtree(self.get_test_image_folder() + '_copy', ignore_errors=True)
 
     def test_parse_json_string(self):
         # Test case: valid JSON string with comments
@@ -53,8 +67,6 @@ class TestUtilMethods(unittest.TestCase):
         for image_file in image_files:
             self.assertTrue(os.path.exists(os.path.join(directory, image_file)))
 
-
-
     def test_encode_images(self):
         # Define the test image files and temporary images folder
         image_files = ['test_image.jpg']
@@ -72,11 +84,6 @@ class TestUtilMethods(unittest.TestCase):
         # Check if each item in the output list is a string (assuming the encoding is a string)
         for encoding in image_encodings:
             self.assertIsInstance(encoding, str)
-
-    def get_test_image_folder(self):
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        tmp_images_folder = os.path.join(current_path, 'imgs')
-        return tmp_images_folder
 
     def test_is_solid_color(self):
         # Define the test image file
@@ -108,6 +115,28 @@ class TestUtilMethods(unittest.TestCase):
         # Clean up the test image file
         os.remove(image_file)
 
+    def test_resize_images(self):
+        # Define the test image files and temporary images folder
+        image_files = ['test_image.jpg']
+        tmp_images_folder = self.make_test_image_folder_copy()
+        
+        image_files_sizes = []
+        for image_file in image_files:
+            image_path = os.path.join(tmp_images_folder, image_file)
+            with Image.open(image_path) as img:
+                image_files_sizes.append(img.size)
+
+        # Call the resize_images function
+        resize_images(image_files, tmp_images_folder)
+        
+        # Check if the output images exist and have the correct dimensions
+        for idx, image_file in enumerate(image_files):
+            old_image_file = image_files_sizes[idx]
+            image_path = os.path.join(tmp_images_folder, image_file)
+            with Image.open(image_path) as img:
+                self.assertTrue(old_image_file != img.size) 
+
+        self.remove_test_image_folder_copy()
 
 if __name__ == '__main__':
     unittest.main()
