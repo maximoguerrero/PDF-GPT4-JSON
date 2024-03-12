@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "pdf-gpt4-json"
+version = "0.1.0"
+description = "Use GTP4-Vision as a better than OCR data extractor"
+authors = ["Maximo G."]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = "^0.9.0"
+pypdfium2 = "^4.28.0"
+split-image = "^2.0.1"
+requests = "^2.31.0"
+
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.4.4"
+mypy = "^0.761"
+rope = "^0.14.0"
+taskipy = "^1.0.1"
+
+
+[tool.taskipy.tasks]
+test = "python -m unittest tests/test_*.py"
+post_test = "task lint"
+
+lint = "task lint_pylint && task lint_mypy"
+lint_pylint = "pylint tests pdf_gpt4_json"
+lint_mypy = "mypy tests pdf_gpt4_json"
+
+pre_publish = "./task test"
+publish = "poetry publish --build"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
