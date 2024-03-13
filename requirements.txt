@@ -3,3 +3,4 @@ pypdfium2=="^4.28.0"
 split-image=="^2.0.1"
 requests=="^2.31.0"
 numpy
+green

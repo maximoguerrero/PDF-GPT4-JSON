@@ -2,7 +2,7 @@ import os
 from gpt import process
 
 
-def main(pdf: str, promptFile: str = None, openaiKey: str = None, verbose: bool = False, cleanup: bool = False):
+def main(pdf: str, promptFile: str = None, openaiKey: str = None, model="gpt-4-vision-preview", verbose: bool = False, cleanup: bool = False):
 
     if not os.path.exists(pdf):
         print(f"File {pdf} not found")
@@ -26,4 +26,4 @@ def main(pdf: str, promptFile: str = None, openaiKey: str = None, verbose: bool 
             userprompt = file.read()
 
     process(filename, folder, userprompt=userprompt,
-            api_key=api_key, verbose=verbose, cleanup=cleanup)
+            api_key=api_key,model=model, verbose=verbose, cleanup=cleanup)

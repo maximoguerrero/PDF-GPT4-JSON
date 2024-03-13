@@ -41,10 +41,10 @@ def parse_json_string(json_string, verbose=False):
         return None
 
 
-def process_image_to_json(image_encoding, prompt, headers):
+def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-vision-preview"):
     # Define the data to send to the OpenAI API
     data = {
-        "model": "gpt-4-vision-preview",
+        "model": model,
         "messages": [
             {
                 "role": "user",
@@ -88,6 +88,7 @@ def extract_pages_as_images(pdf_file, tmp_images_folder, filaname_image="image")
         pil_image = bitmap.to_pil()
         pil_image.save(image_path)
 
+    return os.listdir(tmp_images_folder)
 
 def resize_images(image_files, tmp_images_folder, verbose=False):
     # Resize images if they are too large
