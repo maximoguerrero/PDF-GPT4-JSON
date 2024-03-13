@@ -120,7 +120,7 @@ def split_images(image_files, tmp_images_folder, verbose=False):
                     print(f"Splitting {image_file} into {num_splits} images")
 
                 si(image_path, num_splits, 1, should_square=False,
-                   output_dir=tmp_images_folder, should_cleanup=True)
+                   output_dir=tmp_images_folder, should_cleanup=True, should_quiet= not verbose)
 
 
 def encode_images(image_files, tmp_images_folder, verbose=False):
