@@ -113,16 +113,16 @@ def process(filename, folder, api_key, user_prompt: str = None,
                 json_file = os.path.join(
                     output_folder, f"{image_files[index]}.response.json")
 
-                with open(json_file, "w", encoding="utf-8") as f:
-                    json.dump(response_dict, f)
+                with open(json_file, "w", encoding="utf-8") as file:
+                    json.dump(response_dict, file)
 
                 continue
 
             # Write the response to a JSON file in the temporary folder
             json_file = os.path.join(
                 output_folder, f"{image_files[index]}.json")
-            with open(json_file, "w", encoding="utf-8") as f:
-                json.dump(json_file_data, f)
+            with open(json_file, "w", encoding="utf-8") as file:
+                json.dump(json_file_data, file)
 
             # limit the number of requests to 2 per second
             sleep(8)
@@ -139,8 +139,8 @@ def process(filename, folder, api_key, user_prompt: str = None,
         if verbose:
             print(f"JSON files saved in the folder '{new_output_folder}'")
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except Exception as error:
+        print(f"An error occurred: {error}")
         # exit the program on error
         sys.exit()
 
@@ -167,8 +167,8 @@ def do_images(filename, tmp_images_folder, verbose=False):
     try:
         extract_pages_as_images(filename, tmp_images_folder, filaname_image)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except Exception as error:
+        print(f"An error occurred: {error}")
         print("Failed to covert pages to image for gpt vision")
         # exit the program on error
         sys.exit()

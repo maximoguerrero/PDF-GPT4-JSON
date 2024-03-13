@@ -72,9 +72,9 @@ def parse_json_string(json_string, verbose=False):
         json_data = json.loads(json_string)
 
         return json_data
-    except json.JSONDecodeError as e:
+    except json.JSONDecodeError as error:
         # Handle JSON decoding errors
-        print(f"Invalid JSON string ({e})")
+        print(f"Invalid JSON string ({error})")
         return None
 
 
@@ -167,6 +167,7 @@ def resize_images(image_files, tmp_images_folder, verbose=False):
         image_files (list): List of image file names.
         tmp_images_folder (str): Path to the temporary images folder.
         verbose (bool, optional): Whether to print verbose output. Defaults to False.
+
     """
     for image_file in image_files:
         image_path = os.path.join(tmp_images_folder, image_file)
