@@ -22,9 +22,9 @@ import sys
 import json
 from time import sleep
 from pprint import pprint
-from .util import parse_json_string, process_image_to_json, resize_images, encode_images
-from .util import split_images, extract_pages_as_images, clean_up_tmp_images_folder
-from .util import get_image_files
+from util import parse_json_string, process_image_to_json, resize_images, encode_images
+from util import split_images, extract_pages_as_images, clean_up_tmp_images_folder
+from util import get_image_files
 
 
 def process(filename, folder, api_key, user_prompt: str = None,
