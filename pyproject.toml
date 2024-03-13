@@ -3,7 +3,7 @@ name = "pdf-gpt4-json"
 version = "0.1.0"
 description = "Use GTP4-Vision as a better than OCR data extractor"
 authors = ["Maximo G."]
-license = "MIT"
+license = "GPL-3.0"
 readme = "README.md"
 packages = [{include = "pdf_gpt4_json"}]
 
