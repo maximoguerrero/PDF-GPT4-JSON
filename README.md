@@ -21,36 +21,30 @@ By leveraging the power of GPT-4 Vision, the PDF-GPT4-JSON project simplifies th
 
 ## Installation
 
-1. Clone the repository:
+1. Install via pip:
 
     ```bash
-    git clone https://github.com/your-username/PDF-GPT4-JSON.git
+    pip install pdf_gpt4_json
     ```
-2. Navigate to the project directory:
+2. Set your OpenAI api key:
 
     ```bash
-    cd PDF-GPT4-JSON
+    export OPENAI_API_KEY=sk-xxxxxxxxxxx
     ```
-3. Install the required dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-
-## Usage
-1. OPENAI Key
-
-    Supply your Open AI key as an Enviroment variable `OPENAI_API_KEY`  or  as a command line argument  `--openai-key`
-
  
+    You can also pass in as a command line arugment to the tool  `--openai-key`
 
-2. Run the conversion script:
+## Usage 
+
+1. Run the conversion script:
 
     ```bash
-    python main.py ../samples/sample.pdf 
+    pdf-gpt4-json ./sample.pdf
     ```
 
-    Will generate tmp working folder and an output folder with json for each page.
+    Will generate tmp working folder and an output folder with json for each page. If you already have a folder 'output' it will get renamed, it is recommend you run this tool in a clean directory as to not loose existing information.
 
+2.  Final output folder will be `samplepdf_final_folders` in this case. It will use the pdfs filename as the prefix to the output folder.
 
 ## Parameter
 

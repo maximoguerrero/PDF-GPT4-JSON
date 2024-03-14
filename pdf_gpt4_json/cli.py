@@ -7,7 +7,6 @@ This module provides a command line interface for the gpt-4-vision-preview model
 import os
 from .gpt import process
 
-
 def main(pdf: str, prompt_file: str = None, openai_key: str = None,
          model="gpt-4-vision-preview", verbose: bool = False,
          cleanup: bool = False):

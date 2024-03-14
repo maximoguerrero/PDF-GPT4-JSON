@@ -7,6 +7,9 @@ import typer
 from .cli import main
 
 def run():
+    """
+    Runs the main function using the Typer library.
+    """
     typer.run(main)
 
 

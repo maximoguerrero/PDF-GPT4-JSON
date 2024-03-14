@@ -3,8 +3,10 @@ name = "pdf-gpt4-json"
 version = "0.1.0"
 description = "Use GTP4-Vision as a better than OCR data extractor"
 authors = ["Maximo G."]
-license = "GPL-3.0"
+license = "GPL-3.0-or-later"
 readme = "README.md"
+homepage = "https://github.com/maximoguerrero/PDF-GPT4-JSON"
+repository = "https://github.com/maximoguerrero/PDF-GPT4-JSON"
 
 [tool.poetry.dependencies]
 python = "^3.10"
