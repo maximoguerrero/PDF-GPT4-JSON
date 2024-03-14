@@ -20,6 +20,10 @@ rope = "^0.14.0"
 taskipy = "^1.0.1"
 
 
+[tool.poetry.scripts]
+pdf-gpt4-json = "pdf_gpt4_json.main:run"
+
+
 [tool.taskipy.tasks]
 test = "python -m unittest tests/test_*.py"
 post_test = "task lint"
