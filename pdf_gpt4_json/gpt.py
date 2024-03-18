@@ -20,6 +20,7 @@ The module also imports several utility functions from the util module.
 import os
 import sys
 import json
+import shutil
 from time import sleep
 from pprint import pprint
 from .util import parse_json_string, process_image_to_json, resize_images, encode_images
@@ -43,12 +44,33 @@ def process(filename, folder, api_key, user_prompt: str = None,
     """
     # Change the current working directory to the specified directory
     os.chdir(folder)
+    basename = os.path.basename(filename)
 
-    tmp_images_folder = './tmp_images'
-    output_folder = './output'
+    tmp_images_folder = f"./{basename}_tmp_images"
+    output_folder = f"./{basename}_output"
+    final_output_folder = f"{basename}_final_folders"
+    errors_folder = f"./{basename}_errors"
+    
+    # if the tmp_images_folder exists, delete it and create a new one
+    shutil.rmtree(tmp_images_folder, ignore_errors=True)
     os.makedirs(tmp_images_folder, exist_ok=True)
+    
+    # if the output_folder exists, delete it and create a new one
+    shutil.rmtree(output_folder, ignore_errors=True)
     os.makedirs(output_folder, exist_ok=True)
 
+    # if the final_output_folder exists, delete it to make sure its empty
+    shutil.rmtree(final_output_folder, ignore_errors=True)
+    
+    # if the errors_folder exists, delete it and create a new one
+    shutil.rmtree(errors_folder, ignore_errors=True)
+    os.makedirs(errors_folder, exist_ok=True)
+
+    if verbose:
+        print(f"Creating working folders")
+    
+    # Extract images from the PDF file and perform various operations on them
+    # like resizing, splitting, and encoding
     image_encodings, image_files, filaname_image = do_images(
         filename, tmp_images_folder, verbose=False)
 
@@ -67,6 +89,8 @@ def process(filename, folder, api_key, user_prompt: str = None,
     # Use the user-provided prompt if available
     if user_prompt:
         prompt = user_prompt
+        if verbose:
+            print(f"Using custom prompt: {prompt}\n")
 
     try:
         # Process each image using the GPT-4 Vision model
@@ -78,7 +102,7 @@ def process(filename, folder, api_key, user_prompt: str = None,
 
             # Check if JSON file for the image already exists in tmp folder
             json_file_path = os.path.join(
-                output_folder, f"{image_files[index]}.json")
+                errors_folder, f"{image_files[index]}.json")
             if os.path.exists(json_file_path):
                 if verbose:
                     print("JSON file already exists. Skipping...")
@@ -94,7 +118,7 @@ def process(filename, folder, api_key, user_prompt: str = None,
             # Check if the response contains an error
             if "error" in response_dict.keys():
                 if verbose:
-                    print("gpt returned error")
+                    print("gpt returned error: ", response_dict["error"])
                 had_errors = True
             else:
                 # Parse the JSON string from the response
@@ -111,7 +135,7 @@ def process(filename, folder, api_key, user_prompt: str = None,
             if had_errors:
                 # write the response to a JSON file in the temporary folder for debugging
                 json_file = os.path.join(
-                    output_folder, f"{image_files[index]}.response.json")
+                    errors_folder, f"{image_files[index]}.response.json")
 
                 with open(json_file, "w", encoding="utf-8") as file:
                     json.dump(response_dict, file)
@@ -127,17 +151,30 @@ def process(filename, folder, api_key, user_prompt: str = None,
             # limit the number of requests to 2 per second
             sleep(8)
 
+        # Clean up the temporary images folder
         if cleanup:
             clean_up_tmp_images_folder(tmp_images_folder)
-            os.removedirs(tmp_images_folder)
 
-        new_output_folder = f"{filaname_image}_final_folders"
-        os.rename(output_folder, new_output_folder)
+        os.rename(output_folder, final_output_folder)
         if verbose:
-            print(f"Renaming output folder to {new_output_folder}")
+            print(f"Renaming output folder to {final_output_folder}")
 
-        if verbose:
-            print(f"JSON files saved in the folder '{new_output_folder}'")
+
+        # Print the final output folder
+        print("\n\n-------------------------------------------------------------")
+              
+        # Print the final output folder
+        if len(os.listdir(final_output_folder)) > 0:
+            print(f"JSON files saved in the folder '{final_output_folder}'")   
+        else:
+            # Remove the final output folder if it is empty
+            shutil.rmtree(final_output_folder, ignore_errors=True)
+
+        if len(os.listdir(errors_folder)) > 0:
+            print(f"Errors occurred during processing. Check the folder '{errors_folder}' for details.")
+        else:
+            # Remove the errors folder if it is empty
+            shutil.rmtree(errors_folder, ignore_errors=True)
 
     except Exception as error:
         print(f"An error occurred: {error}")

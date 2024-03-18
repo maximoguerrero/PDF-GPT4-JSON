@@ -1,6 +1,6 @@
 # PDF-GPT4-JSON
 
-This project is designed to convert PDF files into JSON format using GPT-4. For each page in the PDF, a JSON file will be generated. The hierarchy of the JSON structure will be inferred from the layout of the data in the PDF. Can be used as python module or in the cli.
+This project is designed to convert PDF files into JSON format using [GPT-4](https://platform.openai.com/docs/api-reference). For each page in the PDF, a JSON file will be generated. The hierarchy of the JSON structure will be inferred from the layout of the data in the PDF. Can be used as python module or in the cli.
 
 ## Theory of Generating Structured JSON using GPT-4 Vision
 
@@ -42,9 +42,9 @@ By leveraging the power of GPT-4 Vision, the PDF-GPT4-JSON project simplifies th
     pdf-gpt4-json ./sample.pdf
     ```
 
-    Will generate tmp working folder and an output folder with json for each page. If you already have a folder 'output' it will get renamed, it is recommend you run this tool in a clean directory as to not loose existing information.
+    Will generate tmp working folder and an output folder with json for each page. If you already have a folder 'output' it will get renamed,  if the working folders exist they will be deleted and recreated to insure that they are empyt
 
-2.  Final output folder will be `samplepdf_final_folders` in this case. It will use the pdfs filename as the prefix to the output folder.
+2.  Final output folder will be `samplepdf_final_folders` in this case. It will use the pdfs filename as the prefix to the output folder. If there are errors it will be in `{filename}_errors` folder. In both cases  the cli will return a message.
 
 ## Parameter
 
