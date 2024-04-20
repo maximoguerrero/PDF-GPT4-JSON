@@ -17,6 +17,7 @@ import os
 import re
 import mimetypes
 import base64
+import shutil
 import requests
 from PIL import Image
 import pypdfium2 as pdfium
@@ -157,6 +158,8 @@ def extract_pages_as_images(pdf_file, tmp_images_folder, filaname_image="image")
             rotation=0,
             crop=(0, 0, 0, 0)
         )
+
+        # Save the image to the temporary folder
         pil_image = bitmap.to_pil()
         pil_image.save(image_path)
 
@@ -179,10 +182,11 @@ def resize_images(image_files, tmp_images_folder, verbose=False):
             width, height = image.size
             if width > 1024:
                 if verbose:
-                    print(f"Resizing {image_file} from {width}x{
-                          height} to 1024x{int(height * (1024 / width))}")
+                    print(f"Resizing {image_file} from {width}x{height} to 1024x{int(height * (1024 / width))}")
                 resized_image = image.resize(
                     (1024, int(height * (1024 / width))))
+                
+                # resize the image and overwrite the original
                 resized_image.save(image_path)
 
 
@@ -208,6 +212,7 @@ def split_images(image_files, tmp_images_folder, verbose=False):
                 if verbose:
                     print(f"Splitting {image_file} into {num_splits} images")
 
+                # split the image and overwrite the original
                 si(image_path, num_splits, 1, should_square=False,
                    output_dir=tmp_images_folder, should_cleanup=True, should_quiet=not verbose)
 
@@ -236,6 +241,8 @@ def encode_images(image_files, tmp_images_folder, verbose=False):
             if verbose:
                 print(image_file,  f"data:{mime_type};",
                       f"size: {len(image_data) / 1024:.2f} KB")
+    
+    # Return the list of base64-encoded image strings
     return image_encodings
 
 
@@ -266,6 +273,8 @@ def get_image_files(directory):
 
     image_files = filtered_image_files
     image_files.sort()
+
+    # Return the list of image files
     return image_files
 
 
@@ -288,6 +297,7 @@ def is_solid_color(image_path):
             if pixel != first_pixel_color:
                 return False
 
+        # If all pixels have the same color, return True
         return True
 
 
@@ -303,8 +313,6 @@ def clean_up_tmp_images_folder(tmp_images_folder):
     """
     if not os.path.exists(tmp_images_folder):
         return
-
-    image_files = os.listdir(tmp_images_folder)
-    for image_file in image_files:
-        image_path = os.path.join(tmp_images_folder, image_file)
-        os.remove(image_path)
+    
+    # Remove all files in the temporary images folder
+    shutil.rmtree(tmp_images_folder, ignore_errors=True)

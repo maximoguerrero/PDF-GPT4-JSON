@@ -13,6 +13,6 @@ util : module
     The utility module containing helper functions used throughout the package.
 """
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 from .util import *

@@ -27,10 +27,14 @@ def main(pdf: str, prompt_file: str = None, openai_key: str = None,
         print(f"File {pdf} not found")
         return
 
+    # Read the OpenAI API key from the environment
     api_key = os.getenv("OPENAI_API_KEY")
+    
+    # If the openai_key parameter is provided, use it instead
     if openai_key:
         api_key = openai_key
 
+    # get the folder and filename from the PDF path
     folder = os.path.dirname(pdf)
     filename = os.path.basename(pdf)
 
@@ -42,7 +46,8 @@ def main(pdf: str, prompt_file: str = None, openai_key: str = None,
     user_prompt = None
     if prompt_file and os.path.exists(prompt_file):
         with open(prompt_file, "r", encoding="utf-8") as file:
-            user_prompt = file.read()
+            # Read the prompt from the file
+            user_prompt = file.read().strip() + "\n\n"
 
     process(filename, folder, user_prompt=user_prompt,
             api_key=api_key, model=model, verbose=verbose,
