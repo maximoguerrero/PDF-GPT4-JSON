@@ -78,7 +78,7 @@ def parse_json_string(json_string, verbose=False):
         return None
 
 
-def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-vision-preview"):
+def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-turbo"):
     """
     Process an image into JSON using the OpenAI API.
 
@@ -87,7 +87,7 @@ def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-vision-p
         prompt (str): The prompt to provide to the model.
         headers (dict): The headers to include in the API request.
         model (str, optional): The model to use for processing the image. 
-                               Defaults to "gpt-4-vision-preview".
+                               Defaults to "gpt-4-turbo".
 
     Returns:
         dict: The JSON response from the OpenAI API.
@@ -110,18 +110,22 @@ def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-vision-p
                     },
                     {
                         "type": "image_url",
-                        "image_url": image_encoding
+                        "image_url": {
+                            "url": image_encoding,
+                            "detail": "high"
+                            },
+
                     }
                 ]
             }
         ],
-        "max_tokens": 4096
+        "max_tokens": 4096,
+        "temperature": 0.5,
     }
 
     # Send the request to the OpenAI API to process the image into JSON
     response = requests.post(
-        'https://api.openai.com/v1/chat/completions', headers=headers,
-        timeout=120, data=json.dumps(data))
+        'https://api.openai.com/v1/chat/completions', headers=headers, data=json.dumps(data))
     response_dict = response.json()
 
     return response_dict

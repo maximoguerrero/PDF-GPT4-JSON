@@ -1,0 +1,166 @@
+You are an expert data analyst for the IRS and you have been given a task to extract the data from the images of Form 990-pf (Return of Private Foundation).
+Information contained in the PDF:
+- Organization demographics
+- Part I Analysis of Revenue and Expenses 
+- Part II Balance Sheets
+- Part III Analysis of Changes in Net Assets or Fund Balances
+- Part IV Capital Gains and Losses for Tax on Investment Income
+- Part V Excise Tax Based on Investment Income
+- Part VI-­A Statements Regarding Activities
+- Grants and Contributions Paid During the Year or Approved for Future Payment
+Extract the data you see as key-value pairs and list containing key-value pairs in json? 
+Json and data type Format: 
+{
+   "demographics": {
+      "Foundation Name": string,
+      "EIN": string,
+      "Address": {
+         "Street": string,
+         "City": string,
+         "State": string,
+         "Zip": string
+        },
+      "Phone": string,
+      "Return Type": string,
+      "Organization Type": {
+        "501(c)(3)": boolean,
+        "Section 4947(a)(1)": boolean,
+        "Other": boolean
+      },
+      "Foreign Organization": boolean,
+      "Foreign Organization meeting the 85% test": boolean,
+      "If private foundation status was terminated under section 507(b)(1)(A)": boolean,
+      "If the foundation is in a 60month termination under section 507(b)(1)(B),": boolean,
+      "Fair Market Value of Assets": number,
+      "Accounting Method": string,
+   }, 
+   "part-1: Analysis of Revenue and Expenses":{
+        "Revenue (lines 1 to 12)": [
+            {
+                "line": number,
+                "description": string,
+                "detail:{
+                    "Revenue and expenses": number,
+                    "Net Investment Income": number,
+                    "Adjusted Net Income": number,
+                    "Distributed Charitable purpose": number
+                }
+            },...
+        ],...      
+   },
+   "part-2: Balance Sheets (lines 1 to 30)":{
+        "Assets (lines 1 to 16)": [
+            {
+                "line": number,
+                "description": string,
+                "detail:{
+                    "Beginning of year": number,
+                    "End of year": {
+                        "Book Value": number,
+                        "Fair Market Value": number
+                    }
+                }
+            },..
+        ],...
+        "Liabilities (lines 17 to 23)": [
+            {
+                "line": number,
+                "description": string,
+                "detail:{
+                    "Beginning of year": number,
+                    "End of year": {
+                        "Book Value": number,
+                        "Fair Market Value": number
+                    }
+                }
+            },...
+        ],
+        "Net Assets of Fun Balances (lines 24 to 30)": [
+            {
+                "line": number,
+                "description": string,
+                "detail:{
+                    "Beginning of year": number,
+                    "End of year": {
+                        "Book Value": number,
+                        "Fair Market Value": number
+                    }
+                }
+            },...
+        ]       
+   },
+   "part-3: Analysis of Changes in Net Assets or Fund Balances":{
+        "Net Assets or Fund Balances (line 1 to 6)": [
+            {
+                "line": number,
+                "description": string,
+                "detail:{
+                    "Beginning of year": number,
+                    "End of year": number
+                }
+            },...
+        ],...
+    },
+    "part-4: Capital Gains and Losses for Tax on Investment Income (line1 1 to 3)":{
+        "Capital Gains and Losses (row a to e)": {
+            "line1":[
+                {
+                    "row letter": string,
+                    "(a) Description:": string,
+                    "(b) How acquired": string,
+                    "(c) Date acquired": date,
+                    "(d) Date sold": date,
+                    "(e) Gross sales price": number,
+                    "(f) Depreciation": number,
+                    "(g) Cost or other basis": number,
+                    "(h) Gain or (loss) (e) plus (f) minus (g)": number,
+                    "(i) Fair market value": number,
+                    "(j) Book value": number,
+                    "(k) Amount of tax": number,
+                    "(l) Taxable amount": number
+                },..
+            ],{
+                "line2": number,
+                "description": string,
+            },{
+                "line3": number,
+                "description": string,
+            }
+        },...
+    },
+    "part-5: Excise Tax Based on Investment Income (lines 1 to 11)":[
+        {
+            "line": number,
+            "description": string,
+            "detail:{
+                "Taxable amount": number,
+                "Tax rate": number,
+                "Tax due": number
+            }
+        },...
+    ],
+    "part-5a: Statements Regarding Activities (lines 1 to 10)":[
+        {
+            "line1": number,
+            "description": string,
+            "detail:{
+                "Amount": number,
+                "Purpose": string
+            }
+        },...
+    ],
+    "Schedule 3: Grants and Contributions Paid During the Year or Approved for Future Payment":[
+        {
+            "line": number,
+            "description": string,
+            "detail:{
+                "Amount": number,
+                "Purpose": string,
+                "Individual relationship to foundation": string,
+                "Foundation status of recipient": string
+            }
+        },...
+    ]       
+}
+
+Think carefully and Only output the valid json and nothing else.
