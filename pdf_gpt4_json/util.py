@@ -114,7 +114,7 @@ def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-turbo"):
                         "image_url": {
                             "url": image_encoding,
                             "detail": "high"
-                            },
+                        },
 
                     }
                 ]
@@ -126,7 +126,10 @@ def process_image_to_json(image_encoding, prompt, headers, model="gpt-4-turbo"):
 
     # Send the request to the OpenAI API to process the image into JSON
     response = requests.post(
-        'https://api.openai.com/v1/chat/completions', headers=headers, data=json.dumps(data))
+        'https://api.openai.com/v1/chat/completions',
+        headers=headers,
+        data=json.dumps(data),
+        timeout=120)
     response_dict = response.json()
 
     return response_dict
@@ -182,10 +185,11 @@ def resize_images(image_files, tmp_images_folder, verbose=False):
             width, height = image.size
             if width > 1024:
                 if verbose:
-                    print(f"Resizing {image_file} from {width}x{height} to 1024x{int(height * (1024 / width))}")
+                    print(f"Resizing {image_file} from {width}x{
+                          height} to 1024x{int(height * (1024 / width))}")
                 resized_image = image.resize(
                     (1024, int(height * (1024 / width))))
-                
+
                 # resize the image and overwrite the original
                 resized_image.save(image_path)
 
@@ -241,7 +245,7 @@ def encode_images(image_files, tmp_images_folder, verbose=False):
             if verbose:
                 print(image_file,  f"data:{mime_type};",
                       f"size: {len(image_data) / 1024:.2f} KB")
-    
+
     # Return the list of base64-encoded image strings
     return image_encodings
 
@@ -313,6 +317,6 @@ def clean_up_tmp_images_folder(tmp_images_folder):
     """
     if not os.path.exists(tmp_images_folder):
         return
-    
+
     # Remove all files in the temporary images folder
     shutil.rmtree(tmp_images_folder, ignore_errors=True)
