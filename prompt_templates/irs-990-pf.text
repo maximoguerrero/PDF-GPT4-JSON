@@ -37,7 +37,7 @@ Json and data type Format:
    "part-1: Analysis of Revenue and Expenses":{
         "Revenue (lines 1 to 12)": [
             {
-                "line": number,
+                "line": string,
                 "description": string,
                 "detail:{
                     "Revenue and expenses": number,
@@ -51,7 +51,7 @@ Json and data type Format:
    "part-2: Balance Sheets (lines 1 to 30)":{
         "Assets (lines 1 to 16)": [
             {
-                "line": number,
+                "line": string,
                 "description": string,
                 "detail:{
                     "Beginning of year": number,
@@ -64,7 +64,7 @@ Json and data type Format:
         ],...
         "Liabilities (lines 17 to 23)": [
             {
-                "line": number,
+                "line": string,
                 "description": string,
                 "detail:{
                     "Beginning of year": number,
@@ -77,7 +77,7 @@ Json and data type Format:
         ],
         "Net Assets of Fun Balances (lines 24 to 30)": [
             {
-                "line": number,
+                "line": string,
                 "description": string,
                 "detail:{
                     "Beginning of year": number,
@@ -92,7 +92,7 @@ Json and data type Format:
    "part-3: Analysis of Changes in Net Assets or Fund Balances":{
         "Net Assets or Fund Balances (line 1 to 6)": [
             {
-                "line": number,
+                "line": string,
                 "description": string,
                 "detail:{
                     "Beginning of year": number,
@@ -120,17 +120,17 @@ Json and data type Format:
                     "(l) Taxable amount": number
                 },..
             ],{
-                "line2": number,
+                "line2": string,
                 "description": string,
             },{
-                "line3": number,
+                "line3": string,
                 "description": string,
             }
         },...
     },
     "part-5: Excise Tax Based on Investment Income (lines 1 to 11)":[
         {
-            "line": number,
+            "line": string,
             "description": string,
             "detail:{
                 "Taxable amount": number,
@@ -141,7 +141,7 @@ Json and data type Format:
     ],
     "part-5a: Statements Regarding Activities (lines 1 to 10)":[
         {
-            "line1": number,
+            "line1": string,
             "description": string,
             "detail:{
                 "Amount": number,
@@ -151,7 +151,7 @@ Json and data type Format:
     ],
     "Schedule 3: Grants and Contributions Paid During the Year or Approved for Future Payment":[
         {
-            "line": number,
+            "line": string,
             "description": string,
             "detail:{
                 "Amount": number,
@@ -163,4 +163,5 @@ Json and data type Format:
     ]       
 }
 
-Think carefully and Only output the valid json and nothing else.
+Think carefully, any numbers should be formated as float, no trailing commas before closing parentheses. 
+Only output the valid perfectly formatted json and nothing else.

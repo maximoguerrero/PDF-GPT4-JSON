@@ -26,6 +26,7 @@ from pprint import pprint
 from .util import parse_json_string, process_image_to_json, resize_images, encode_images
 from .util import split_images, extract_pages_as_images, clean_up_tmp_images_folder
 from .util import get_image_files
+import traceback
 
 
 def process(filename, folder, api_key, user_prompt: str = None,
@@ -138,6 +139,8 @@ def process(filename, folder, api_key, user_prompt: str = None,
                     errors_folder, f"{image_files[index]}.response.json")
 
                 with open(json_file, "w", encoding="utf-8") as file:
+                    if verbose:
+                        print("ERROR In JSON:", response_dict["choices"][0]["message"]["content"])
                     json.dump(response_dict, file)
 
                 continue
@@ -178,6 +181,8 @@ def process(filename, folder, api_key, user_prompt: str = None,
 
     except Exception as error:
         print(f"An error occurred: {error}")
+        if verbose:
+            traceback.print_exc()
         # exit the program on error
         sys.exit()
 

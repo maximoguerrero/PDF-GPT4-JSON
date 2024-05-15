@@ -39,6 +39,7 @@ def main(pdf: str, prompt_file: str = None, openai_key: str = None,
     filename = os.path.basename(pdf)
 
     if verbose:
+        print(f"GPT Model  {model}")
         print(f"PDF to extract {pdf}")
         print(f"Folder {folder}")
         print(f"Filename {filename}")
